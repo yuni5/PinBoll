@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class TouchFripperController : MonoBehaviour {
 
+	private float width = Screen.width;
+
+	// タッチした場合の座標
+	public float startPos;
+
 	private HingeJoint myHingeJoint;
 
 	private float defaultAngle = 20;
 
 	private float flickAngle = -20;
 
-	// Use this for initialization
+
 	void Start () {
 
 		this.myHingeJoint = GetComponent<HingeJoint> ();
@@ -19,21 +24,26 @@ public class TouchFripperController : MonoBehaviour {
 
 	}
 
-	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && tag == "LeftFripperTag") {
-			SetAngle (this.flickAngle);
-		}
+		if (Input.touchCount > 0) {
+			for(int i = 0; i < Input.touchCount; i++ ){
+				Touch touch = Input.GetTouch(i);
+				startPos = touch.position.x;
 
-		if (Input.GetKeyDown (KeyCode.RightArrow) && tag == "RightFripperTag") {
-			SetAngle (this.flickAngle);
+				if (touch.phase == TouchPhase.Began ) {
+					if (startPos < width/2 && tag == "LeftFripperTag") {
+						SetAngle (this.flickAngle);
+					}else if (startPos > width/2 && tag == "RightFripperTag") {
+						SetAngle (this.flickAngle);
+					}else if (startPos < width/2 &&startPos > width/2 &&tag == "LeftFripperTag"&&tag == "RightFripperTag") {
+						SetAngle (this.flickAngle);
+					}
+				}else{
+					SetAngle (this.defaultAngle);
+				}
+			}
 		}
-
-		if (Input.GetKeyUp (KeyCode.LeftArrow) || Input.GetKeyUp (KeyCode.RightArrow)) {
-			SetAngle (this.defaultAngle);
-		}
-
 	}
 
 	public void SetAngle(float angle){
@@ -42,4 +52,6 @@ public class TouchFripperController : MonoBehaviour {
 		jointspr.targetPosition = angle;
 		this.myHingeJoint.spring = jointspr;
 	}
+
 }
+

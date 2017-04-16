@@ -25,20 +25,21 @@ public class ScoreScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision other) {
-		if (tag == "SmallStarTag") {
+
+		if (other.gameObject.tag == "SmallStarTag") {
 			this.PointText.GetComponent<Text> ().text = "point:+5";
 			ScoreScript.TotalPoint += 5;
 			this.ScoreText.GetComponent<Text> ().text = "Score:" + TotalPoint;
 
-		} else if (tag == "LargeStarTag") {
+		} else if (other.gameObject.tag == "LargeStarTag") {
 			this.PointText.GetComponent<Text> ().text = "point:+20";
 			ScoreScript.TotalPoint += 20;
 			this.ScoreText.GetComponent<Text> ().text = "Score:" + TotalPoint;
-		}else if(tag == "SmallCloudTag") {
+		}else if(other.gameObject.tag == "SmallCloudTag") {
 			this.PointText.GetComponent<Text> ().text = "point:+10";
 			ScoreScript.TotalPoint += 10;
 			this.ScoreText.GetComponent<Text> ().text = "Score:" + TotalPoint;
-		}else if(tag == "LargeCloudTag") {
+		}else if(other.gameObject.tag == "LargeCloudTag") {
 			this.PointText.GetComponent<Text> ().text = "point:+15";
 			ScoreScript.TotalPoint += 15;
 			this.ScoreText.GetComponent<Text> ().text = "Score:" + TotalPoint;
