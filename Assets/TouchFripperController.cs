@@ -28,10 +28,14 @@ public class TouchFripperController : MonoBehaviour {
 
 		if (Input.touchCount > 0) {
 			for(int i = 0; i < Input.touchCount; i++ ){
+				//タッチしている指の数（0は1本目、1は2本目）
+				// for文を使って本数を合わせる
 				Touch touch = Input.GetTouch(i);
+				// タッチしたx軸の位置
 				startPos = touch.position.x;
 
-				if (touch.phase == TouchPhase.Began ) {
+				// タップすること（touch.phas）タップしたタイミングを設定（TouchPhase.BeganとTouchPhase.Stationary）
+				if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Stationary ) {
 					if (startPos < width/2 && tag == "LeftFripperTag") {
 						SetAngle (this.flickAngle);
 					}else if (startPos > width/2 && tag == "RightFripperTag") {
@@ -39,7 +43,8 @@ public class TouchFripperController : MonoBehaviour {
 					}else if (startPos < width/2 &&startPos > width/2 &&tag == "LeftFripperTag"&&tag == "RightFripperTag") {
 						SetAngle (this.flickAngle);
 					}
-				}else{
+					// TouchPhase.Endedは画面から指が離れた時
+				}else if(touch.phase == TouchPhase.Ended){
 					SetAngle (this.defaultAngle);
 				}
 			}
